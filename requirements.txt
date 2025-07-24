@@ -1,0 +1,6 @@
+aiogram==2.19
+telethon
+termcolor
+SpeechRecognition
+requests
+GitPython
