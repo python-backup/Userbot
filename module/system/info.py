@@ -1,4 +1,5 @@
 from module.loader import System
+from module.system.updater import Updater
 from telethon import events
 from aiogram.types import InlineQuery, InlineQueryResultPhoto
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -9,7 +10,6 @@ import shutil
 from pathlib import Path
 from core import config
 import logging
-from module.system.updater import Updater
 
 NAME = "Информация о системе"
 DESCRIPTION = "Получение детальной системной информации"
@@ -51,25 +51,19 @@ class Info(System):
             return None
 
     def _detect_hosting(self):
-        """Определяет окружение, в котором запущен бот"""
-        # Проверка VamHost
         if os.getenv("VAMHOST"):
             return "VamHost"
         
-        # Проверка Termux
         termux_path = Path("/data/data/com.termux/files/home")
         if termux_path.exists() and os.getenv("ANDROID_ROOT"):
             return "Termux"
         
-        # Проверка Replit
         if os.getenv("REPLIT"):
             return "Replit"
             
-        # Проверка обычного Linux сервера
         if platform.system() == "Linux":
             return "Linux Server"
             
-        # Возвращаем имя системы, если не распознали
         return platform.system()
 
     def _get_module_sizes(self):
@@ -178,7 +172,6 @@ class Info(System):
             f"<b>👤 Пользователь</b>\n└ Юзернейм: @{username if username else 'не указан'}\n"
         )
         
-        # Добавляем информацию об обновлении
         update_info = await self._get_update_info()
         
         message_text = f"{update_info if update_info else ''}{bot_info}{sys_info}{disk_info}{module_info}{user_status}"
