@@ -1,6 +1,7 @@
 import asyncio
 from termcolor import colored
 from core.run import main
+import os
 
 if __name__ == "__main__":
     try:
